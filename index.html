@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moto 2026 — Guerrilla 450</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <span class="header-badge" id="projeto-badge">Moto 2026</span>
+      <h1 id="projeto-titulo">Royal Enfield Guerrilla 450</h1>
+      <p class="subtitle" id="header-subtitle">Acompanhamento do projeto de compra</p>
+    </header>
+
+    <nav class="tabs" role="tablist" aria-label="Navegação principal">
+      <button type="button" class="tab active" role="tab" aria-selected="true" data-tab="progresso">Progresso</button>
+      <button type="button" class="tab" role="tab" aria-selected="false" data-tab="cenarios">Cenários</button>
+      <button type="button" class="tab" role="tab" aria-selected="false" data-tab="historico">Histórico gastos Lucas</button>
+      <button type="button" class="tab" role="tab" aria-selected="false" data-tab="venda">Itens para venda</button>
+      <button type="button" class="tab" role="tab" aria-selected="false" data-tab="receber">Valores a receber</button>
+    </nav>
+
+    <div id="tab-progresso" class="tab-panel active" role="tabpanel">
+      <section class="hero-progress" aria-label="Progresso da meta de entrada">
+        <div class="hero-progress-top">
+          <h2>Progresso da entrada</h2>
+          <span class="percent" id="progress-percent">—</span>
+        </div>
+        <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <div class="hero-stats" id="hero-stats"></div>
+      </section>
+
+      <div class="grid">
+        <section class="card">
+          <div class="card-header">
+            <span class="card-icon">🏍️</span>
+            <h3>Objetivo</h3>
+          </div>
+          <div class="card-body">
+            <table class="data-table" id="tabela-objetivo">
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Valor</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-header">
+            <span class="card-icon">✅</span>
+            <h3>Próximos passos</h3>
+          </div>
+          <div class="card-body">
+            <ul class="task-list" id="lista-tarefas"></ul>
+          </div>
+        </section>
+      </div>
+
+      <section class="card grid-full">
+        <div class="card-header">
+          <span class="card-icon">🎯</span>
+          <h3>Acompanhamento da meta</h3>
+        </div>
+        <div class="card-body">
+          <div class="meta-grid" id="meta-grid"></div>
+        </div>
+      </section>
+    </div>
+
+    <div id="tab-cenarios" class="tab-panel" role="tabpanel" hidden>
+      <div id="cenarios-container"></div>
+    </div>
+
+    <div id="tab-historico" class="tab-panel" role="tabpanel" hidden>
+      <section class="hero-progress" aria-label="Resumo dos gastos no cartão">
+        <div class="hero-progress-top">
+          <h2>Projeção de gastos fixos</h2>
+          <span class="percent gastos-reducao" id="gastos-reducao-percent">—</span>
+        </div>
+        <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+          <div class="progress-fill progress-fill-success" id="gastos-progress-fill"></div>
+        </div>
+        <div class="hero-stats" id="gastos-stats"></div>
+      </section>
+
+      <section class="card grid-full">
+        <div class="card-header">
+          <span class="card-icon">💳</span>
+          <h3>Histórico gastos Lucas — Jul a Dez</h3>
+        </div>
+        <div class="card-body">
+          <div class="gastos-chart" id="gastos-chart"></div>
+          <table class="data-table" id="tabela-gastos">
+            <thead>
+              <tr>
+                <th>Mês</th>
+                <th>Gastos fixos</th>
+                <th>Economia</th>
+                <th>Observações</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <div id="tab-venda" class="tab-panel" role="tabpanel" hidden>
+      <section class="card grid-full">
+        <div class="card-header">
+          <span class="card-icon">🏷️</span>
+          <h3>Itens para venda</h3>
+        </div>
+        <div class="card-body">
+          <table class="data-table" id="tabela-venda">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Valor</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <div id="tab-receber" class="tab-panel" role="tabpanel" hidden>
+      <section class="card grid-full">
+        <div class="card-header">
+          <span class="card-icon">📥</span>
+          <h3>Valores a receber</h3>
+        </div>
+        <div class="card-body">
+          <table class="data-table" id="tabela-receber">
+            <thead>
+              <tr>
+                <th>Origem</th>
+                <th>Total</th>
+                <th>Recebido</th>
+                <th>Falta</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <footer class="footer">
+      <p>Projeto <span id="footer-projeto">Moto 2026</span> — meta: <span id="footer-modelo">Guerrilla 450</span></p>
+    </footer>
+  </div>
+
+  <script src="constants.js"></script>
+  <script>
+    const STORAGE_KEY = "moto2026-tarefas";
+
+    function formatMoney(value) {
+      return value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+    }
+
+    function statusBadge(status) {
+      const map = {
+        disponivel: { label: "Disponível", cls: "badge-disponivel", icon: "✅" },
+        anunciado: { label: "Anunciado", cls: "badge-anunciado", icon: "⏳" },
+        neutro: { label: "—", cls: "badge-neutro", icon: "" }
+      };
+      const s = map[status] || map.neutro;
+      return `<span class="badge ${s.cls}">${s.icon} ${s.label}</span>`;
+    }
+
+    function getTarefasSalvas() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+      } catch {
+        return {};
+      }
+    }
+
+    function salvarTarefa(id, concluida) {
+      const salvas = getTarefasSalvas();
+      salvas[id] = concluida;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(salvas));
+    }
+
+    function chanceBadge(chance) {
+      const map = {
+        menor: { label: "Menor chance", cls: "badge-chance-menor" },
+        boa: { label: "Boa chance", cls: "badge-chance-boa" },
+        maior: { label: "Maior chance", cls: "badge-chance-maior" }
+      };
+      const c = map[chance] || map.menor;
+      return `<span class="badge ${c.cls}">${c.label}</span>`;
+    }
+
+    function renderizarCenarioSafra(c) {
+      const { prazo: prazoEscolhido, parcela, valorFinanciar, valorTotalPago } = c.condicoesEscolhidas;
+
+      return `
+        <section class="card cenario-card">
+          <div class="card-header">
+            <span class="cenario-badge">${c.titulo}</span>
+            <span class="card-icon">${c.tipo === "safra" ? "🏦" : "💳"}</span>
+            <h3>${c.nome}</h3>
+          </div>
+          <div class="card-body financiamento-body">
+            <div class="financiamento-info">
+              <div class="fin-info-item"><span class="fin-label">Simulação</span><span class="fin-value">#${c.simulacao}</span></div>
+              <div class="fin-info-item"><span class="fin-label">Banco</span><span class="fin-value">${c.banco} (parceiro ${c.parceiro})</span></div>
+              <div class="fin-info-item"><span class="fin-label">Tipo</span><span class="fin-value">${c.tipoAnalise}</span></div>
+              <div class="fin-info-item"><span class="fin-label">Valor da moto</span><span class="fin-value">${formatMoney(c.valorMoto)}</span></div>
+            </div>
+            <div class="financiamento-grid">
+              <div class="financiamento-block">
+                <h4>Opções de entrada</h4>
+                <table class="data-table">
+                  <thead><tr><th>Entrada</th><th>Chance de aprovação</th></tr></thead>
+                  <tbody>
+                    ${c.opcoesEntrada.map((o) => `
+                      <tr class="${o.selecionada ? "row-selected" : ""}">
+                        <td class="money">${formatMoney(o.valor)}</td>
+                        <td>${chanceBadge(o.chance)}</td>
+                      </tr>
+                    `).join("")}
+                  </tbody>
+                </table>
+              </div>
+              <div class="financiamento-block">
+                <h4>Prazos — cenário maior chance</h4>
+                <table class="data-table">
+                  <thead><tr><th>Prazo</th><th>Parcela</th></tr></thead>
+                  <tbody>
+                    ${c.parcelasMaiorChance.map((p) => `
+                      <tr class="${p.prazo === prazoEscolhido ? "row-selected" : ""}">
+                        <td>${p.prazo}x</td>
+                        <td class="money">${formatMoney(p.parcela)}</td>
+                      </tr>
+                    `).join("")}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="financiamento-destaque">
+              <div class="destaque-titulo">Condição de financiamento (entrada ${formatMoney(c.entradaSelecionada)})</div>
+              <div class="destaque-valores">
+                <div><span class="destaque-label">${prazoEscolhido} parcelas de</span><span class="destaque-valor">${formatMoney(parcela)}</span></div>
+                <div><span class="destaque-label">Valor a financiar</span><span class="destaque-valor">${formatMoney(valorFinanciar)}</span></div>
+                <div><span class="destaque-label">Total pago na moto</span><span class="destaque-valor destaque-total">${formatMoney(valorTotalPago)}</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderizarCenarioCartao(c) {
+      if (c.pendente) {
+        return `
+          <section class="card cenario-card cenario-pendente">
+            <div class="card-header">
+              <span class="cenario-badge">${c.titulo}</span>
+              <span class="card-icon">💳</span>
+              <h3>${c.nome}</h3>
+            </div>
+            <div class="card-body">
+              <div class="cenario-placeholder">
+                <p class="placeholder-msg">${c.mensagem}</p>
+              </div>
+            </div>
+          </section>
+        `;
+      }
+
+      const limiteDisponivel = c.limiteAtual - c.limiteEmUso;
+      const faltaLimite = Math.max(0, c.limiteNecessario - limiteDisponivel);
+      const entrada = OBJETIVO.entradaDesejada;
+      const valorTotalMoto = entrada + c.valorTotal;
+
+      return `
+        <section class="card cenario-card">
+          <div class="card-header">
+            <span class="cenario-badge">${c.titulo}</span>
+            <span class="card-icon">💳</span>
+            <h3>${c.nome}</h3>
+          </div>
+          <div class="card-body financiamento-body">
+            <div class="financiamento-info">
+              <div class="fin-info-item"><span class="fin-label">Limite atual</span><span class="fin-value">${formatMoney(c.limiteAtual)}</span></div>
+              <div class="fin-info-item"><span class="fin-label">Em uso</span><span class="fin-value">${formatMoney(c.limiteEmUso)}</span></div>
+              <div class="fin-info-item"><span class="fin-label">Disponível hoje</span><span class="fin-value ${limiteDisponivel >= c.limiteNecessario ? "" : "fin-warning"}">${formatMoney(limiteDisponivel)}</span></div>
+              <div class="fin-info-item"><span class="fin-label">Limite necessário</span><span class="fin-value">${formatMoney(c.limiteNecessario)}</span></div>
+            </div>
+            <div class="financiamento-grid cartao-grid">
+              <div class="financiamento-block">
+                <h4>Condição no cartão</h4>
+                <table class="data-table">
+                  <thead><tr><th>Item</th><th>Valor</th></tr></thead>
+                  <tbody>
+                    <tr class="row-selected">
+                      <td>Parcelas</td>
+                      <td class="money">${c.prazo}x de ${formatMoney(c.parcela)}</td>
+                    </tr>
+                    <tr>
+                      <td>Total no cartão</td>
+                      <td class="money">${formatMoney(c.valorTotal)}</td>
+                    </tr>
+                    <tr>
+                      <td>Entrada (à vista)</td>
+                      <td class="money">${formatMoney(entrada)}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="financiamento-block">
+                <h4>Situação do limite</h4>
+                <table class="data-table">
+                  <thead><tr><th>Indicador</th><th>Valor</th></tr></thead>
+                  <tbody>
+                    <tr>
+                      <td>Limite atual</td>
+                      <td class="money">${formatMoney(c.limiteAtual)}</td>
+                    </tr>
+                    <tr>
+                      <td>Em uso</td>
+                      <td class="money">${formatMoney(c.limiteEmUso)}</td>
+                    </tr>
+                    <tr class="row-selected">
+                      <td>Disponível</td>
+                      <td class="money">${formatMoney(limiteDisponivel)}</td>
+                    </tr>
+                    <tr>
+                      <td>Falta de limite</td>
+                      <td class="money ${faltaLimite > 0 ? "text-warning" : "text-success"}">${formatMoney(faltaLimite)}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="financiamento-destaque ${faltaLimite > 0 ? "destaque-alerta" : ""}">
+              <div class="destaque-titulo">${c.objetivo}</div>
+              <div class="destaque-valores">
+                <div><span class="destaque-label">${c.prazo} parcelas de</span><span class="destaque-valor">${formatMoney(c.parcela)}</span></div>
+                <div><span class="destaque-label">Total no cartão</span><span class="destaque-valor">${formatMoney(c.valorTotal)}</span></div>
+                <div><span class="destaque-label">Total pago na moto</span><span class="destaque-valor destaque-total">${formatMoney(valorTotalMoto)}</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderizarCenarios(cenarios) {
+      document.getElementById("cenarios-container").innerHTML = cenarios
+        .map((c) => {
+          if (c.tipo === "safra") return renderizarCenarioSafra(c);
+          if (c.tipo === "cartao") return renderizarCenarioCartao(c);
+          return "";
+        })
+        .join("");
+    }
+
+    function initTabs() {
+      const tabs = document.querySelectorAll(".tab");
+      const panels = document.querySelectorAll(".tab-panel");
+      const subtitle = document.getElementById("header-subtitle");
+      const subtitles = {
+        progresso: "Progresso da meta de entrada",
+        cenarios: "Cenários de compra da moto",
+        historico: "Histórico gastos Lucas",
+        venda: "Itens anunciados para venda",
+        receber: "Valores pendentes de recebimento"
+      };
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          const target = tab.dataset.tab;
+
+          tabs.forEach((t) => {
+            const active = t.dataset.tab === target;
+            t.classList.toggle("active", active);
+            t.setAttribute("aria-selected", active);
+          });
+
+          panels.forEach((panel) => {
+            const active = panel.id === `tab-${target}`;
+            panel.classList.toggle("active", active);
+            panel.hidden = !active;
+          });
+
+          subtitle.textContent = subtitles[target];
+        });
+      });
+    }
+
+    function renderizarGastos(gastos) {
+      const primeiro = gastos[0];
+      const ultimo = gastos[gastos.length - 1];
+      const maxGasto = Math.max(...gastos.map((g) => g.gastosFixos));
+      const reducaoTotal = primeiro.gastosFixos - ultimo.gastosFixos;
+      const reducaoPercent = (reducaoTotal / primeiro.gastosFixos) * 100;
+      const economiaAcumulada = gastos.reduce((sum, g) => sum + g.economia, 0);
+
+      document.getElementById("gastos-reducao-percent").textContent = `−${reducaoPercent.toFixed(1)}%`;
+      document.getElementById("gastos-progress-fill").style.width = `${reducaoPercent}%`;
+
+      document.getElementById("gastos-stats").innerHTML = `
+        <div class="hero-stat">
+          <div class="label">Gastos em ${primeiro.mes}</div>
+          <div class="value warning">${formatMoney(primeiro.gastosFixos)}</div>
+        </div>
+        <div class="hero-stat">
+          <div class="label">Gastos em ${ultimo.mes}</div>
+          <div class="value highlight">${formatMoney(ultimo.gastosFixos)}</div>
+        </div>
+        <div class="hero-stat">
+          <div class="label">Redução total</div>
+          <div class="value success">${formatMoney(reducaoTotal)}</div>
+        </div>
+        <div class="hero-stat">
+          <div class="label">Economia acumulada</div>
+          <div class="value success">${formatMoney(economiaAcumulada)}</div>
+        </div>
+      `;
+
+      document.getElementById("gastos-chart").innerHTML = gastos
+        .map((g) => {
+          const width = (g.gastosFixos / maxGasto) * 100;
+          return `
+            <div class="gastos-bar-row">
+              <span class="gastos-bar-label">${g.mes}</span>
+              <div class="gastos-bar-track">
+                <div class="gastos-bar-fill" style="width: ${width}%"></div>
+              </div>
+              <span class="gastos-bar-value">${formatMoney(g.gastosFixos)}</span>
+            </div>
+          `;
+        })
+        .join("");
+
+      document.querySelector("#tabela-gastos tbody").innerHTML = gastos
+        .map((g, i) => `
+          <tr class="${i === gastos.length - 1 ? "row-selected" : ""}">
+            <td><strong>${g.mes}</strong></td>
+            <td class="money">${formatMoney(g.gastosFixos)}</td>
+            <td class="money ${g.economia > 0 ? "text-success" : ""}">${g.economia > 0 ? `−${formatMoney(g.economia)}` : formatMoney(0)}</td>
+            <td class="obs-cell">${g.observacoes}</td>
+          </tr>
+        `)
+        .join("");
+    }
+
+    function renderizar(data) {
+      const { projeto, objetivo, cenarios, recursos, valoresReceber, proximosPassos, meta, gastosCartao } = data;
+      const tarefasSalvas = getTarefasSalvas();
+
+      document.getElementById("projeto-badge").textContent = projeto.nome;
+      document.getElementById("projeto-titulo").textContent = projeto.modelo;
+      document.getElementById("footer-projeto").textContent = projeto.nome;
+      document.getElementById("footer-modelo").textContent = projeto.modelo.split(" ").pop();
+
+      const percent = Math.min(100, (meta.valorDisponivelHoje / meta.entrada) * 100);
+      document.getElementById("progress-percent").textContent = `${percent.toFixed(1)}%`;
+      document.getElementById("progress-fill").style.width = `${percent}%`;
+      document.querySelector(".progress-bar").setAttribute("aria-valuenow", percent.toFixed(1));
+
+      document.getElementById("hero-stats").innerHTML = `
+        <div class="hero-stat">
+          <div class="label">Meta da entrada</div>
+          <div class="value">${formatMoney(meta.entrada)}</div>
+        </div>
+        <div class="hero-stat">
+          <div class="label">Disponível hoje</div>
+          <div class="value highlight">${formatMoney(meta.valorDisponivelHoje)}</div>
+        </div>
+        <div class="hero-stat">
+          <div class="label">Falta para a meta</div>
+          <div class="value warning">${formatMoney(meta.faltaParaMeta)}</div>
+        </div>
+      `;
+
+      const objetivoRows = [
+        ["Valor da moto", formatMoney(objetivo.valorMoto)],
+        ["Versão", projeto.versao || "—"],
+        ["Entrada desejada", formatMoney(objetivo.entradaDesejada)],
+        ["Meta de compra", projeto.metaCompra || "(definir)"]
+      ];
+
+      document.querySelector("#tabela-objetivo tbody").innerHTML = objetivoRows
+        .map(([item, valor]) => `<tr><td class="item-name">${item}</td><td class="money">${valor}</td></tr>`)
+        .join("");
+
+      renderizarCenarios(cenarios);
+
+      const itensVenda = recursos.filter((r) => r.status === "anunciado");
+      const totalVenda = itensVenda.reduce((sum, r) => sum + r.valor, 0);
+
+      document.querySelector("#tabela-venda tbody").innerHTML = itensVenda
+        .map((r) => `
+          <tr>
+            <td>${r.origem}</td>
+            <td class="money">${formatMoney(r.valor)}</td>
+            <td>${statusBadge(r.status)}</td>
+          </tr>
+        `)
+        .join("") + `
+          <tr class="row-total">
+            <td>Total anunciados</td>
+            <td class="money">${formatMoney(totalVenda)}</td>
+            <td>${statusBadge("anunciado")}</td>
+          </tr>
+        `;
+
+      document.querySelector("#tabela-receber tbody").innerHTML = valoresReceber
+        .map((v) => `
+          <tr>
+            <td>${v.origem}</td>
+            <td class="money">${formatMoney(v.valorTotal)}</td>
+            <td class="money">${formatMoney(v.recebido)}</td>
+            <td class="money">${formatMoney(v.faltaReceber)}</td>
+          </tr>
+        `)
+        .join("");
+
+      const lista = document.getElementById("lista-tarefas");
+      lista.innerHTML = proximosPassos
+        .map((t) => {
+          const concluida = tarefasSalvas[t.id] ?? t.concluida;
+          return `
+            <li class="task-item${concluida ? " done" : ""}" data-id="${t.id}">
+              <input type="checkbox" id="task-${t.id}" ${concluida ? "checked" : ""}>
+              <label class="task-text" for="task-${t.id}">${t.tarefa}</label>
+            </li>
+          `;
+        })
+        .join("");
+
+      lista.querySelectorAll(".task-item").forEach((item) => {
+        item.addEventListener("click", (e) => {
+          if (e.target.tagName === "INPUT") return;
+          const checkbox = item.querySelector("input");
+          checkbox.checked = !checkbox.checked;
+          checkbox.dispatchEvent(new Event("change"));
+        });
+
+        const checkbox = item.querySelector("input");
+        checkbox.addEventListener("change", () => {
+          item.classList.toggle("done", checkbox.checked);
+          salvarTarefa(item.dataset.id, checkbox.checked);
+        });
+      });
+
+      const metaItems = [
+        { label: "Meta da entrada", value: formatMoney(meta.entrada), cls: "accent" },
+        { label: "Valor disponível hoje", value: formatMoney(meta.valorDisponivelHoje), cls: "success" },
+        { label: "Valor potencial com vendas", value: formatMoney(meta.valorPotencialVendas), cls: "" },
+        { label: "Falta para a meta (hoje)", value: formatMoney(meta.faltaParaMeta), cls: "warning" }
+      ];
+
+      document.getElementById("meta-grid").innerHTML = metaItems
+        .map((m) => `
+          <div class="meta-item">
+            <div class="indicator">${m.label}</div>
+            <div class="indicator-value ${m.cls}">${m.value}</div>
+          </div>
+        `)
+        .join("");
+
+      renderizarGastos(gastosCartao);
+    }
+
+    initTabs();
+    renderizar(DATA);
+  </script>
+</body>
+</html>
