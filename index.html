@@ -169,6 +169,11 @@
       return value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
     }
 
+    function formatValorSimulacao(valor, aproximado) {
+      const formatted = formatMoney(valor);
+      return aproximado ? `~${formatted}` : formatted;
+    }
+
     function statusBadge(status) {
       const map = {
         disponivel: { label: "Disponível", cls: "badge-disponivel", icon: "✅" },
@@ -354,6 +359,39 @@
                 <div><span class="destaque-label">Total pago na moto</span><span class="destaque-valor destaque-total">${formatMoney(valorTotalMoto)}</span></div>
               </div>
             </div>
+            ${c.simulacaoEntradas ? `
+            <div class="simulacao-entradas">
+              <h4>Histórico — simulação por entrada (${c.prazo}x no cartão)</h4>
+              <div class="table-scroll">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Entrada</th>
+                      <th>Valor financiado</th>
+                      <th>Parcela (${c.prazo}x)</th>
+                      <th>Total das parcelas</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${c.simulacaoEntradas.map((s) => `
+                      <tr class="${s.atual ? "row-selected" : ""}${s.equilibrio ? " row-equilibrio" : ""}">
+                        <td class="money">${formatMoney(s.entrada)}${s.atual ? ' <span class="row-tag">atual</span>' : ""}${s.equilibrio ? ' <span class="row-tag row-tag-equilibrio">equilíbrio</span>' : ""}</td>
+                        <td class="money">${formatMoney(s.valorFinanciado)}</td>
+                        <td class="money">${formatValorSimulacao(s.parcela, !s.exato)}</td>
+                        <td class="money">${formatValorSimulacao(s.totalParcelas, !s.exato)}</td>
+                      </tr>
+                    `).join("")}
+                  </tbody>
+                </table>
+              </div>
+              ${c.pontoEquilibrio ? `
+                <div class="financiamento-destaque destaque-equilibrio">
+                  <div class="destaque-titulo">O que mais chama atenção — entrada ${formatMoney(c.pontoEquilibrio.entrada)}</div>
+                  <p class="destaque-texto">${c.pontoEquilibrio.texto}</p>
+                </div>
+              ` : ""}
+            </div>
+            ` : ""}
           </div>
         </section>
       `;
