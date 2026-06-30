@@ -54,7 +54,24 @@ const CENARIO_02 = {
   limiteAtual: 15533,
   limiteEmUso: 5788,
   limiteNecessario: 18890.73,
-  objetivo: "Na segunda-feira, falar com o gerente para conseguir limite de R$ 18.890,73 para comprar a moto"
+  objetivo: "Na segunda-feira, falar com o gerente para conseguir limite de R$ 18.890,73 para comprar a moto",
+  simulacaoEntradas: [
+    { entrada: 10000, valorFinanciado: 19490, parcela: 899.56, totalParcelas: 18890.73, exato: true },
+    { entrada: 11000, valorFinanciado: 18490, parcela: 853, totalParcelas: 17913, exato: false },
+    { entrada: 12000, valorFinanciado: 17490, parcela: 807, totalParcelas: 16940, exato: false, atual: true },
+    { entrada: 13000, valorFinanciado: 16490, parcela: 761, totalParcelas: 15980, exato: false },
+    { entrada: 14000, valorFinanciado: 15490, parcela: 715, totalParcelas: 15010, exato: false },
+    { entrada: 15000, valorFinanciado: 14490, parcela: 669, totalParcelas: 14050, exato: false, equilibrio: true },
+    { entrada: 16000, valorFinanciado: 13490, parcela: 623, totalParcelas: 13080, exato: false },
+    { entrada: 17000, valorFinanciado: 12490, parcela: 577, totalParcelas: 12120, exato: false },
+    { entrada: 18000, valorFinanciado: 11490, parcela: 531, totalParcelas: 11150, exato: false },
+    { entrada: 19000, valorFinanciado: 10490, parcela: 484, totalParcelas: 10170, exato: false },
+    { entrada: 20000, valorFinanciado: 9490, parcela: 438, totalParcelas: 9200, exato: false }
+  ],
+  pontoEquilibrio: {
+    entrada: 15000,
+    texto: "R$ 15.000 de entrada parece um excelente ponto de equilíbrio: parcela cai de R$ 899 para cerca de R$ 670; você reduz bastante o comprometimento mensal; ainda evita financiar um valor muito alto."
+  }
 };
 
 const CENARIOS = [CENARIO_01, CENARIO_02];
