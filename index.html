@@ -66,6 +66,24 @@
 
       <section class="card grid-full">
         <div class="card-header">
+          <span class="card-icon">📄</span>
+          <h3>Documentação e mercado</h3>
+        </div>
+        <div class="card-body">
+          <table class="data-table" id="tabela-documentacao">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Valor</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card grid-full">
+        <div class="card-header">
           <span class="card-icon">🎯</span>
           <h3>Acompanhamento da meta</h3>
         </div>
@@ -498,7 +516,7 @@
     }
 
     function renderizar(data) {
-      const { projeto, objetivo, cenarios, recursos, valoresReceber, proximosPassos, meta, gastosCartao } = data;
+      const { projeto, objetivo, documentacao, cenarios, recursos, valoresReceber, proximosPassos, meta, gastosCartao } = data;
       const tarefasSalvas = getTarefasSalvas();
 
       document.getElementById("projeto-badge").textContent = projeto.nome;
@@ -535,6 +553,17 @@
 
       document.querySelector("#tabela-objetivo tbody").innerHTML = objetivoRows
         .map(([item, valor]) => `<tr><td class="item-name">${item}</td><td class="money">${valor}</td></tr>`)
+        .join("");
+
+      const documentacaoRows = [
+        ["Valor de mercado (FIPE)", documentacao.fipeAproximado ? `≈ ${formatMoney(documentacao.valorFipe)}` : formatMoney(documentacao.valorFipe)],
+        [`IPVA (${documentacao.ipvaPercentual}% no ${documentacao.ipvaUf})`, formatMoney(documentacao.ipva)],
+        [`Licenciamento (Taxa Detran-${documentacao.ipvaUf})`, formatMoney(documentacao.licenciamento)],
+        ["Custo total de documentação", formatMoney(documentacao.custoTotal)]
+      ];
+
+      document.querySelector("#tabela-documentacao tbody").innerHTML = documentacaoRows
+        .map(([item, valor], i) => `<tr class="${i === documentacaoRows.length - 1 ? "row-total" : ""}"><td class="item-name">${item}</td><td class="money">${valor}</td></tr>`)
         .join("");
 
       renderizarCenarios(cenarios);
