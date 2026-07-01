@@ -10,6 +10,16 @@ const OBJETIVO = {
   entradaDesejada: 12000
 };
 
+const DOCUMENTACAO = {
+  valorFipe: 29000,
+  fipeAproximado: true,
+  ipva: 580,
+  ipvaPercentual: 2,
+  ipvaUf: "DF",
+  licenciamento: 106.26,
+  custoTotal: 686.26
+};
+
 const CENARIO_01 = {
   id: "01",
   titulo: "Cenário 01",
@@ -122,6 +132,7 @@ const GASTOS_CARTAO = [
 const DATA = {
   projeto: PROJETO,
   objetivo: OBJETIVO,
+  documentacao: DOCUMENTACAO,
   cenarios: CENARIOS,
   recursos: RECURSOS,
   valoresReceber: VALORES_RECEBER,
