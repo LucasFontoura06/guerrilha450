@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moto 2026 — Guerrilla 450</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <span class="header-badge" id="projeto-badge">Moto 2026</span>
+      <h1 id="projeto-titulo">Royal Enfield Guerrilla 450</h1>
+      <p class="subtitle" id="header-subtitle">Acompanhamento do projeto de compra</p>
+    </header>
+
+    <nav class="tabs" role="tablist" aria-label="Navegação principal">
+      <button type="button" class="tab active" role="tab" aria-selected="true" data-tab="progresso">Progresso</button>
+      <button type="button" class="tab" role="tab" aria-selected="false" data-tab="cenarios">Cenários</button>
+      <button type="button" class="tab" role="tab" aria-selected="false" data-tab="historico">Histórico cartão BB</button>
+      <button type="button" class="tab" role="tab" aria-selected="false" data-tab="parcela-moto">Histórico parcela moto</button>
+      <button type="button" class="tab" role="tab" aria-selected="false" data-tab="venda">Itens para venda</button>
+      <button type="button" class="tab" role="tab" aria-selected="false" data-tab="receber">Valores a receber</button>
+    </nav>
+
+    <div id="tab-progresso" class="tab-panel active" role="tabpanel">
+      <section class="hero-progress" aria-label="Progresso da meta de entrada">
+        <div class="progress-total progress-total-dual">
+          <div class="progress-total-item">
+            <span class="progress-total-label">Na conta</span>
+            <span class="progress-total-value" id="progress-total-conta">—</span>
+          </div>
+          <div class="progress-total-item progress-total-potential">
+            <span class="progress-total-label">Conta + itens à venda</span>
+            <span class="progress-total-value progress-total-value-potential" id="progress-total-com-vendas">—</span>
+          </div>
+        </div>
+        <div class="hero-progress-top">
+          <h2>Progresso da entrada</h2>
+          <div class="progress-summary progress-summary-dual">
+            <div class="progress-percent-item">
+              <span class="percent" id="progress-percent-conta">—</span>
+              <span class="progress-subtitle">só o valor na conta</span>
+            </div>
+            <div class="progress-percent-item progress-percent-potential">
+              <span class="percent percent-potential" id="progress-percent-total">—</span>
+              <span class="progress-subtitle">conta + itens à venda</span>
+            </div>
+          </div>
+        </div>
+        <div class="metas-bar" id="metas-bar"></div>
+        <div class="metas-legend" id="metas-legend"></div>
+        <div class="metas-tiers" id="metas-tiers"></div>
+        <div class="hero-stats" id="hero-stats"></div>
+      </section>
+
+      <div class="grid">
+        <section class="card">
+          <div class="card-header">
+            <span class="card-icon">🏍️</span>
+            <h3>Objetivo</h3>
+          </div>
+          <div class="card-body">
+            <table class="data-table" id="tabela-objetivo">
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Valor</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-header">
+            <span class="card-icon">✅</span>
+            <h3>Próximos passos</h3>
+          </div>
+          <div class="card-body">
+            <ul class="task-list" id="lista-tarefas"></ul>
+          </div>
+        </section>
+      </div>
+
+      <section class="card grid-full">
+        <div class="card-header">
+          <span class="card-icon">📄</span>
+          <h3>Documentação e mercado</h3>
+        </div>
+        <div class="card-body">
+          <table class="data-table" id="tabela-documentacao">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Valor</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+
+    <div id="tab-cenarios" class="tab-panel" role="tabpanel" hidden>
+      <div id="cenarios-container"></div>
+    </div>
+
+    <div id="tab-historico" class="tab-panel" role="tabpanel" hidden>
+      <section class="hero-progress" aria-label="Resumo do cartão BB">
+        <div class="hero-progress-top">
+          <h2>Cartão Banco do Brasil</h2>
+          <div class="progress-summary">
+            <span class="percent percent-potential" id="bb-limite-credito">—</span>
+            <span class="progress-subtitle">limite de crédito</span>
+          </div>
+        </div>
+        <div class="hero-stats" id="bb-stats"></div>
+      </section>
+
+      <section class="card grid-full">
+        <div class="card-header">
+          <span class="card-icon">💳</span>
+          <h3>Histórico cartão BB — Jul a Out</h3>
+        </div>
+        <div class="card-body">
+          <div class="table-scroll">
+            <table class="data-table tabela-parcela-moto" id="tabela-cartao-bb">
+              <thead id="thead-cartao-bb"></thead>
+              <tbody id="tbody-cartao-bb"></tbody>
+              <tfoot id="tfoot-cartao-bb"></tfoot>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div id="tab-parcela-moto" class="tab-panel" role="tabpanel" hidden>
+      <section class="hero-progress" aria-label="Resumo da simulação da parcela da moto">
+        <div class="hero-progress-top">
+          <h2>Simulação — parcela da moto</h2>
+          <span class="percent percent-potential" id="parcela-moto-valor">—</span>
+        </div>
+        <div class="hero-stats" id="parcela-moto-stats"></div>
+      </section>
+
+      <section class="card grid-full">
+        <div class="card-header">
+          <span class="card-icon">🏍️</span>
+          <h3>Histórico mensal com parcela da moto — Jul a Out</h3>
+        </div>
+        <div class="card-body">
+          <div class="table-scroll">
+            <table class="data-table tabela-parcela-moto" id="tabela-parcela-moto">
+              <thead id="thead-parcela-moto"></thead>
+              <tbody id="tbody-parcela-moto"></tbody>
+              <tfoot id="tfoot-parcela-moto"></tfoot>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div id="tab-venda" class="tab-panel" role="tabpanel" hidden>
+      <section class="card grid-full">
+        <div class="card-header">
+          <span class="card-icon">🏷️</span>
+          <h3>Itens para venda</h3>
+        </div>
+        <div class="card-body">
+          <table class="data-table" id="tabela-venda">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Valor</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <div id="tab-receber" class="tab-panel" role="tabpanel" hidden>
+      <section class="card grid-full">
+        <div class="card-header">
+          <span class="card-icon">📥</span>
+          <h3>Valores a receber</h3>
+        </div>
+        <div class="card-body">
+          <table class="data-table" id="tabela-receber">
+            <thead>
+              <tr>
+                <th>Origem</th>
+                <th>Total</th>
+                <th>Recebido</th>
+                <th>Falta</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <footer class="footer">
+      <p>Projeto <span id="footer-projeto">Moto 2026</span> — meta: <span id="footer-modelo">Guerrilla 450</span></p>
+    </footer>
+  </div>
+
+  <script src="constants.js"></script>
+  <script>
+    const STORAGE_KEY = "moto2026-tarefas";
+
+    function formatMoney(value) {
+      return value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+    }
+
+    function formatValorSimulacao(valor, aproximado) {
+      const formatted = formatMoney(valor);
+      return aproximado ? `~${formatted}` : formatted;
+    }
+
+    function statusBadge(status) {
+      const map = {
+        disponivel: { label: "Disponível", cls: "badge-disponivel", icon: "✅" },
+        anunciado: { label: "Anunciado", cls: "badge-anunciado", icon: "⏳" },
+        vendido: { label: "Vendido", cls: "badge-vendido", icon: "✅" },
+        neutro: { label: "—", cls: "badge-neutro", icon: "" }
+      };
+      const s = map[status] || map.neutro;
+      return `<span class="badge ${s.cls}">${s.icon} ${s.label}</span>`;
+    }
+
+    function getTarefasSalvas() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+      } catch {
+        return {};
+      }
+    }
+
+    function sincronizarTarefasConstants(proximosPassos) {
+      const salvas = getTarefasSalvas();
+      let mudou = false;
+
+      proximosPassos.forEach((t) => {
+        if (t.concluida && salvas[t.id] !== true) {
+          salvas[t.id] = true;
+          mudou = true;
+        }
+      });
+
+      if (mudou) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(salvas));
+      }
+
+      return salvas;
+    }
+
+    function tarefaEstaConcluida(t, tarefasSalvas) {
+      if (t.concluida) return true;
+      return !!tarefasSalvas[t.id];
+    }
+
+    function salvarTarefa(id, concluida) {
+      const salvas = getTarefasSalvas();
+      salvas[id] = concluida;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(salvas));
+    }
+
+    function chanceBadge(chance) {
+      const map = {
+        menor: { label: "Menor chance", cls: "badge-chance-menor" },
+        boa: { label: "Boa chance", cls: "badge-chance-boa" },
+        maior: { label: "Maior chance", cls: "badge-chance-maior" }
+      };
+      const c = map[chance] || map.menor;
+      return `<span class="badge ${c.cls}">${c.label}</span>`;
+    }
+
+    function renderizarCenarioSafra(c) {
+      const { prazo: prazoEscolhido, parcela, valorFinanciar, valorTotalPago, observacao } = c.condicoesEscolhidas;
+
+      return `
+        <section class="card cenario-card">
+          <div class="card-header">
+            <span class="cenario-badge">${c.titulo}</span>
+            <span class="card-icon">${c.tipo === "safra" ? "🏦" : "💳"}</span>
+            <h3>${c.nome}</h3>
+          </div>
+          <div class="card-body financiamento-body">
+            <div class="financiamento-info">
+              <div class="fin-info-item"><span class="fin-label">Simulação</span><span class="fin-value">#${c.simulacao}</span></div>
+              <div class="fin-info-item"><span class="fin-label">Banco</span><span class="fin-value">${c.banco} (parceiro ${c.parceiro})</span></div>
+              <div class="fin-info-item"><span class="fin-label">Tipo</span><span class="fin-value">${c.tipoAnalise}</span></div>
+              <div class="fin-info-item"><span class="fin-label">Valor da moto</span><span class="fin-value">${formatMoney(c.valorMoto)}</span></div>
+            </div>
+            <div class="financiamento-grid">
+              <div class="financiamento-block">
+                <h4>Opções de entrada</h4>
+                <table class="data-table">
+                  <thead><tr><th>Entrada</th><th>Chance de aprovação</th></tr></thead>
+                  <tbody>
+                    ${c.opcoesEntrada.map((o) => `
+                      <tr class="${o.selecionada || o.entradaAtual ? "row-selected" : ""}">
+                        <td class="money">${formatMoney(o.valor)}${o.entradaAtual ? ' <span class="row-tag row-tag-guardado">entrada atual</span>' : ""}</td>
+                        <td>${chanceBadge(o.chance)}</td>
+                      </tr>
+                    `).join("")}
+                  </tbody>
+                </table>
+              </div>
+              <div class="financiamento-block">
+                <h4>Prazos — cenário maior chance</h4>
+                <table class="data-table">
+                  <thead><tr><th>Prazo</th><th>Parcela</th></tr></thead>
+                  <tbody>
+                    ${c.parcelasMaiorChance.map((p) => `
+                      <tr class="${p.prazo === prazoEscolhido ? "row-selected" : ""}">
+                        <td>${p.prazo}x</td>
+                        <td class="money">${formatMoney(p.parcela)}</td>
+                      </tr>
+                    `).join("")}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="financiamento-destaque">
+              <div class="destaque-titulo">Condição de financiamento (entrada ${formatMoney(c.entradaSelecionada)})</div>
+              ${observacao ? `<p class="destaque-texto">${observacao}</p>` : ""}
+              <div class="destaque-valores">
+                <div><span class="destaque-label">${prazoEscolhido} parcelas de</span><span class="destaque-valor">${formatMoney(parcela)}</span></div>
+                <div><span class="destaque-label">Valor a financiar</span><span class="destaque-valor">${formatMoney(valorFinanciar)}</span></div>
+                <div><span class="destaque-label">Total pago na moto</span><span class="destaque-valor destaque-total">${formatMoney(valorTotalPago)}</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderizarCenarioCartao(c) {
+      if (c.pendente) {
+        return `
+          <section class="card cenario-card cenario-pendente">
+            <div class="card-header">
+              <span class="cenario-badge">${c.titulo}</span>
+              <span class="card-icon">💳</span>
+              <h3>${c.nome}</h3>
+            </div>
+            <div class="card-body">
+              <div class="cenario-placeholder">
+                <p class="placeholder-msg">${c.mensagem}</p>
+              </div>
+            </div>
+          </section>
+        `;
+      }
+
+      const limiteDisponivel = c.limiteAtual - c.limiteEmUso;
+      const faltaLimite = Math.max(0, c.limiteNecessario - limiteDisponivel);
+      const entrada = OBJETIVO.entradaDesejada;
+      const valorTotalMoto = entrada + c.valorTotal;
+
+      return `
+        <section class="card cenario-card">
+          <div class="card-header">
+            <span class="cenario-badge">${c.titulo}</span>
+            <span class="card-icon">💳</span>
+            <h3>${c.nome}</h3>
+          </div>
+          <div class="card-body financiamento-body">
+            <div class="financiamento-info">
+              <div class="fin-info-item"><span class="fin-label">Limite atual</span><span class="fin-value">${formatMoney(c.limiteAtual)}</span></div>
+              <div class="fin-info-item"><span class="fin-label">Em uso</span><span class="fin-value">${formatMoney(c.limiteEmUso)}</span></div>
+              <div class="fin-info-item"><span class="fin-label">Disponível hoje</span><span class="fin-value ${limiteDisponivel >= c.limiteNecessario ? "" : "fin-warning"}">${formatMoney(limiteDisponivel)}</span></div>
+              <div class="fin-info-item"><span class="fin-label">Limite necessário</span><span class="fin-value">${formatMoney(c.limiteNecessario)}</span></div>
+            </div>
+            <div class="financiamento-grid cartao-grid">
+              <div class="financiamento-block">
+                <h4>Condição no cartão</h4>
+                <table class="data-table">
+                  <thead><tr><th>Item</th><th>Valor</th></tr></thead>
+                  <tbody>
+                    <tr class="row-selected">
+                      <td>Parcelas</td>
+                      <td class="money">${c.prazo}x de ${formatMoney(c.parcela)}</td>
+                    </tr>
+                    <tr>
+                      <td>Total no cartão</td>
+                      <td class="money">${formatMoney(c.valorTotal)}</td>
+                    </tr>
+                    <tr>
+                      <td>Entrada (à vista)</td>
+                      <td class="money">${formatMoney(entrada)}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="financiamento-block">
+                <h4>Situação do limite</h4>
+                <table class="data-table">
+                  <thead><tr><th>Indicador</th><th>Valor</th></tr></thead>
+                  <tbody>
+                    <tr>
+                      <td>Limite atual</td>
+                      <td class="money">${formatMoney(c.limiteAtual)}</td>
+                    </tr>
+                    <tr>
+                      <td>Em uso</td>
+                      <td class="money">${formatMoney(c.limiteEmUso)}</td>
+                    </tr>
+                    <tr class="row-selected">
+                      <td>Disponível</td>
+                      <td class="money">${formatMoney(limiteDisponivel)}</td>
+                    </tr>
+                    <tr>
+                      <td>Falta de limite</td>
+                      <td class="money ${faltaLimite > 0 ? "text-warning" : "text-success"}">${formatMoney(faltaLimite)}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="financiamento-destaque ${faltaLimite > 0 ? "destaque-alerta" : ""}">
+              <div class="destaque-titulo">${c.objetivo}</div>
+              <div class="destaque-valores">
+                <div><span class="destaque-label">${c.prazo} parcelas de</span><span class="destaque-valor">${formatMoney(c.parcela)}</span></div>
+                <div><span class="destaque-label">Total no cartão</span><span class="destaque-valor">${formatMoney(c.valorTotal)}</span></div>
+                <div><span class="destaque-label">Total pago na moto</span><span class="destaque-valor destaque-total">${formatMoney(valorTotalMoto)}</span></div>
+              </div>
+            </div>
+            ${c.simulacaoEntradas ? `
+            <div class="simulacao-entradas">
+              <h4>Histórico — simulação por entrada (${c.prazo}x no cartão)</h4>
+              <div class="table-scroll">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Entrada</th>
+                      <th>Valor financiado</th>
+                      <th>Parcela (${c.prazo}x)</th>
+                      <th>Total das parcelas</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${c.simulacaoEntradas.map((s) => {
+                      const classes = [
+                        s.melhor ? "row-melhor" : "",
+                        s.atual && !s.melhor ? "row-selected" : "",
+                        s.guardado && !s.melhor ? "row-guardado" : ""
+                      ].filter(Boolean).join(" ");
+                      return `
+                      <tr class="${classes}">
+                        <td class="money">${formatMoney(s.entrada)}${s.guardado ? ' <span class="row-tag row-tag-guardado">entrada atual</span>' : ""}${s.atual ? ' <span class="row-tag">limite do cartão</span>' : ""}${s.melhor ? ' <span class="row-tag row-tag-melhor">cenário ideal</span>' : ""}</td>
+                        <td class="money">${formatMoney(s.valorFinanciado)}</td>
+                        <td class="money">${formatValorSimulacao(s.parcela, !s.exato)}</td>
+                        <td class="money">${formatValorSimulacao(s.totalParcelas, !s.exato)}</td>
+                      </tr>
+                    `;
+                    }).join("")}
+                  </tbody>
+                </table>
+              </div>
+              ${c.melhorCenario ? `
+                <div class="financiamento-destaque destaque-melhor">
+                  <div class="destaque-titulo">🏆 Cenário ideal — entrada ${formatMoney(c.melhorCenario.entrada)}</div>
+                  <div class="destaque-valores destaque-valores-compact">
+                    <div><span class="destaque-label">Valor financiado</span><span class="destaque-valor">${formatMoney(c.melhorCenario.valorFinanciado)}</span></div>
+                    <div><span class="destaque-label">Parcela (${c.prazo}x)</span><span class="destaque-valor">~${formatMoney(c.melhorCenario.parcela)}</span></div>
+                    <div><span class="destaque-label">Total das parcelas</span><span class="destaque-valor destaque-total">~${formatMoney(c.melhorCenario.totalParcelas)}</span></div>
+                  </div>
+                  <p class="destaque-texto">${c.melhorCenario.texto}</p>
+                </div>
+              ` : ""}
+            </div>
+            ` : ""}
+          </div>
+        </section>
+      `;
+    }
+
+    function renderizarCenarios(cenarios) {
+      document.getElementById("cenarios-container").innerHTML = cenarios
+        .map((c) => {
+          if (c.tipo === "safra") return renderizarCenarioSafra(c);
+          if (c.tipo === "cartao") return renderizarCenarioCartao(c);
+          return "";
+        })
+        .join("");
+    }
+
+    function initTabs() {
+      const tabs = document.querySelectorAll(".tab");
+      const panels = document.querySelectorAll(".tab-panel");
+      const subtitle = document.getElementById("header-subtitle");
+      const subtitles = {
+        progresso: "Metas estratégicas de entrada",
+        cenarios: "Cenários de compra da moto",
+        historico: "Histórico cartão Banco do Brasil",
+        "parcela-moto": "Histórico mensal com parcela da moto",
+        venda: "Itens anunciados para venda",
+        receber: "Valores pendentes de recebimento"
+      };
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          const target = tab.dataset.tab;
+
+          tabs.forEach((t) => {
+            const active = t.dataset.tab === target;
+            t.classList.toggle("active", active);
+            t.setAttribute("aria-selected", active);
+          });
+
+          panels.forEach((panel) => {
+            const active = panel.id === `tab-${target}`;
+            panel.classList.toggle("active", active);
+            panel.hidden = !active;
+          });
+
+          subtitle.textContent = subtitles[target];
+        });
+      });
+    }
+
+    function renderizarHistoricoCartaoBB(historico) {
+      if (!historico) return;
+
+      const { meses, labels, limiteCredito, totais, itens, banco } = historico;
+
+      document.getElementById("bb-limite-credito").textContent = formatMoney(limiteCredito);
+
+      document.getElementById("bb-stats").innerHTML = meses
+        .map((mes) => {
+          const t = totais[mes];
+          return `
+            <div class="hero-stat">
+              <div class="label">${labels[mes]} — limite disponível</div>
+              <div class="value simulado">${formatMoney(t.limiteDisponivel)}</div>
+            </div>
+          `;
+        })
+        .join("");
+
+      document.getElementById("thead-cartao-bb").innerHTML = `
+        <tr>
+          <th rowspan="2">Item</th>
+          ${meses.map((mes) => `<th colspan="2">${labels[mes]}</th>`).join("")}
+        </tr>
+        <tr>
+          ${meses.map(() => `<th>Valor</th><th>Parcela</th>`).join("")}
+        </tr>
+      `;
+
+      document.getElementById("tbody-cartao-bb").innerHTML = itens
+        .map((row) => `
+          <tr>
+            <td>${row.item}</td>
+            ${meses.map((mes) => celulaMes(row[mes])).join("")}
+          </tr>
+        `)
+        .join("");
+
+      document.getElementById("tfoot-cartao-bb").innerHTML = `
+        <tr class="row-total">
+          <td><strong>SOMA</strong></td>
+          ${meses.map((mes) => `<td class="money" colspan="2">${formatMoney(totais[mes].soma)}</td>`).join("")}
+        </tr>
+        <tr class="row-salario">
+          <td><strong>Limite disponível</strong></td>
+          ${meses.map((mes) => `<td class="money text-success" colspan="2">${formatMoney(totais[mes].limiteDisponivel)}</td>`).join("")}
+        </tr>
+        <tr class="row-final">
+          <td><strong>Limite de crédito (${banco})</strong></td>
+          <td class="money text-moto" colspan="${meses.length * 2}">${formatMoney(limiteCredito)}</td>
+        </tr>
+      `;
+    }
+
+    function renderizarMetas(meta, recursos) {
+      const metas = meta.metasEntrada;
+      const conta = meta.valorDisponivelHoje;
+      const totalVendas = recursos
+        .filter((r) => r.status === "anunciado")
+        .reduce((sum, r) => sum + r.valor, 0);
+      const total = conta + totalVendas;
+      const metaMax = metas[metas.length - 1].valor;
+      const proximaMeta = metas.find((m) => total < m.valor);
+      const percentConta = (conta / metaMax) * 100;
+      const percentTotal = (total / metaMax) * 100;
+      const contaPercent = Math.min(100, (conta / metaMax) * 100);
+      const vendasPercent = Math.min(100 - contaPercent, (totalVendas / metaMax) * 100);
+
+      document.getElementById("progress-total-conta").textContent = formatMoney(conta);
+      document.getElementById("progress-total-com-vendas").textContent = formatMoney(total);
+      document.getElementById("progress-percent-conta").textContent = `${percentConta.toFixed(1)}%`;
+      document.getElementById("progress-percent-total").textContent = `${percentTotal.toFixed(1)}%`;
+
+      const markersHtml = metas
+        .map((m, i) => {
+          const left = (m.valor / metaMax) * 100;
+          const alcancada = total >= m.valor;
+          const edgeClass = i === 0 ? "metas-marker-start" : i === metas.length - 1 ? "metas-marker-end" : "";
+          return `
+            <div class="metas-marker ${edgeClass} ${alcancada ? "metas-marker-done" : ""}" style="left: ${left}%">
+              <span class="metas-marker-line"></span>
+              <span class="metas-marker-dot"></span>
+              <span class="metas-marker-label">${m.icone} ${formatMoney(m.valor)}</span>
+            </div>
+          `;
+        })
+        .join("");
+
+      document.getElementById("metas-bar").innerHTML = `
+        <div class="metas-bar-track" role="progressbar" aria-valuemin="0" aria-valuemax="${metaMax}" aria-valuenow="${total}">
+          <div class="metas-bar-stack">
+            <div class="metas-bar-fill metas-bar-fill-conta" style="width: ${contaPercent}%"></div>
+            <div class="metas-bar-fill metas-bar-fill-vendas" style="width: ${vendasPercent}%"></div>
+          </div>
+          ${markersHtml}
+        </div>
+      `;
+
+      document.getElementById("metas-legend").innerHTML = `
+        <span class="legend-item"><span class="legend-swatch legend-conta"></span>Na conta</span>
+        <span class="legend-item"><span class="legend-swatch legend-vendas"></span>Itens à venda</span>
+      `;
+
+      document.getElementById("metas-tiers").innerHTML = metas
+        .map((m) => {
+          const alcancada = total >= m.valor;
+          const falta = Math.max(0, m.valor - total);
+          const isProxima = proximaMeta && proximaMeta.id === m.id;
+          return `
+            <div class="meta-tier ${alcancada ? "meta-tier-done" : ""} ${isProxima ? "meta-tier-active" : ""}">
+              <div class="meta-tier-header">
+                <span class="meta-tier-title">${m.icone} ${m.label}</span>
+                ${alcancada ? '<span class="meta-tier-check">✅</span>' : ""}
+              </div>
+              <div class="meta-tier-value">${formatMoney(m.valor)}</div>
+              <div class="meta-tier-status ${alcancada ? "meta-tier-ok" : ""}">
+                ${alcancada ? "Alcançada" : `Faltam ${formatMoney(falta)}`}
+              </div>
+            </div>
+          `;
+        })
+        .join("");
+
+      document.getElementById("hero-stats").innerHTML = `
+        <div class="hero-stat">
+          <div class="label">Na conta</div>
+          <div class="value highlight">${formatMoney(conta)}</div>
+        </div>
+        <div class="hero-stat">
+          <div class="label">Itens à venda</div>
+          <div class="value simulado">${formatMoney(totalVendas)}</div>
+        </div>
+        <div class="hero-stat">
+          <div class="label">Próxima meta${proximaMeta ? ` (${proximaMeta.label.toLowerCase()})` : ""}</div>
+          <div class="value ${proximaMeta ? "warning" : "success"}">${proximaMeta ? formatMoney(proximaMeta.valor) : "Todas alcançadas"}</div>
+        </div>
+        <div class="hero-stat">
+          <div class="label">Falta para a próxima</div>
+          <div class="value warning">${proximaMeta ? formatMoney(proximaMeta.valor - total) : formatMoney(0)}</div>
+        </div>
+      `;
+    }
+
+    function celulaMes(mesData) {
+      if (!mesData) {
+        return `<td class="money celula-vazia">—</td><td class="parcela-cell celula-vazia">—</td>`;
+      }
+      const parcela = mesData.parcela || "—";
+      return `<td class="money">${formatMoney(mesData.valor)}</td><td class="parcela-cell">${parcela}</td>`;
+    }
+
+    function renderizarHistoricoParcelaMoto(historico) {
+      if (!historico) return;
+
+      const { meses, labels, parcelaMoto, totais, itens } = historico;
+
+      document.getElementById("parcela-moto-valor").textContent = formatMoney(parcelaMoto);
+
+      document.getElementById("parcela-moto-stats").innerHTML = meses
+        .map((mes) => {
+          const t = totais[mes];
+          return `
+            <div class="hero-stat">
+              <div class="label">${labels[mes]} — sobra c/ moto</div>
+              <div class="value ${t.final >= 0 ? "success" : "warning"}">${formatMoney(t.final)}</div>
+            </div>
+          `;
+        })
+        .join("");
+
+      document.getElementById("thead-parcela-moto").innerHTML = `
+        <tr>
+          <th rowspan="2">Item</th>
+          ${meses.map((mes) => `<th colspan="2">${labels[mes]}</th>`).join("")}
+        </tr>
+        <tr>
+          ${meses.map(() => `<th>Valor</th><th>Parcela</th>`).join("")}
+        </tr>
+      `;
+
+      document.getElementById("tbody-parcela-moto").innerHTML = itens
+        .map((row) => `
+          <tr>
+            <td>${row.item}</td>
+            ${meses.map((mes) => celulaMes(row[mes])).join("")}
+          </tr>
+        `)
+        .join("");
+
+      const resumoLinhas = [
+        { label: "TOTAL gastos", key: "gastos", cls: "row-total" },
+        { label: "SALÁRIO", key: "salario", cls: "row-salario" },
+        { label: "SOBRA (salário − gastos)", key: "sobra", cls: "row-sobra" },
+        { label: "MOTO", key: "moto", cls: "row-moto" },
+        { label: "SOBRA FINAL (c/ moto)", key: "final", cls: "row-final" }
+      ];
+
+      document.getElementById("tfoot-parcela-moto").innerHTML = resumoLinhas
+        .map((linha) => `
+          <tr class="${linha.cls}">
+            <td><strong>${linha.label}</strong></td>
+            ${meses.map((mes) => {
+              const valor = totais[mes][linha.key];
+              const valorCls = linha.key === "final"
+                ? (valor >= 0 ? "text-success" : "text-warning")
+                : linha.key === "moto"
+                  ? "text-moto"
+                  : "";
+              return `<td class="money ${valorCls}" colspan="2">${formatMoney(valor)}</td>`;
+            }).join("")}
+          </tr>
+        `)
+        .join("");
+    }
+
+    function renderizar(data) {
+      const { projeto, objetivo, documentacao, cenarios, recursos, valoresReceber, proximosPassos, meta, historicoCartaoBB, historicoParcelaMoto } = data;
+      const tarefasSalvas = sincronizarTarefasConstants(proximosPassos);
+
+      document.getElementById("projeto-badge").textContent = projeto.nome;
+      document.getElementById("projeto-titulo").textContent = projeto.modelo;
+      document.getElementById("footer-projeto").textContent = projeto.nome;
+      document.getElementById("footer-modelo").textContent = projeto.modelo.split(" ").pop();
+
+      renderizarMetas(meta, recursos);
+
+      const metaMinima = meta.metasEntrada.find((m) => m.id === "minima");
+      const metaIdealRef = meta.metasEntrada.find((m) => m.id === "ideal");
+      const metaLimite = meta.metasEntrada.find((m) => m.id === "limite");
+
+      const objetivoRows = [
+        ["Valor da moto", formatMoney(objetivo.valorMoto)],
+        ["Versão", projeto.versao || "—"],
+        ["Entrada desejada (meta mínima)", formatMoney(metaMinima.valor)],
+        ["Meta ideal", formatMoney(metaIdealRef.valor)],
+        ["Meta limite do cartão", formatMoney(metaLimite.valor)],
+        ["Meta de compra", projeto.metaCompra || "(definir)"]
+      ];
+
+      document.querySelector("#tabela-objetivo tbody").innerHTML = objetivoRows
+        .map(([item, valor]) => `<tr><td class="item-name">${item}</td><td class="money">${valor}</td></tr>`)
+        .join("");
+
+      const documentacaoRows = [
+        ["Valor de mercado (FIPE)", documentacao.fipeAproximado ? `≈ ${formatMoney(documentacao.valorFipe)}` : formatMoney(documentacao.valorFipe)],
+        [`IPVA (${documentacao.ipvaPercentual}% no ${documentacao.ipvaUf})`, formatMoney(documentacao.ipva)],
+        [`Licenciamento (Taxa Detran-${documentacao.ipvaUf})`, formatMoney(documentacao.licenciamento)],
+        ["Custo total de documentação", formatMoney(documentacao.custoTotal)]
+      ];
+
+      document.querySelector("#tabela-documentacao tbody").innerHTML = documentacaoRows
+        .map(([item, valor], i) => `<tr class="${i === documentacaoRows.length - 1 ? "row-total" : ""}"><td class="item-name">${item}</td><td class="money">${valor}</td></tr>`)
+        .join("");
+
+      renderizarCenarios(cenarios);
+
+      const itensVenda = recursos.filter((r) => r.status === "anunciado");
+      const itensVendidos = recursos.filter((r) => r.status === "vendido");
+      const totalVenda = itensVenda.reduce((sum, r) => sum + r.valor, 0);
+      const totalVendidos = itensVendidos.reduce((sum, r) => sum + r.valor, 0);
+
+      document.querySelector("#tabela-venda tbody").innerHTML = itensVenda
+        .map((r) => `
+          <tr>
+            <td>${r.origem}</td>
+            <td class="money">${formatMoney(r.valor)}</td>
+            <td>${statusBadge(r.status)}</td>
+          </tr>
+        `)
+        .join("") + `
+          <tr class="row-total">
+            <td>Total anunciados</td>
+            <td class="money">${formatMoney(totalVenda)}</td>
+            <td>${statusBadge("anunciado")}</td>
+          </tr>
+        ` + itensVendidos
+        .map((r) => `
+          <tr class="row-vendido">
+            <td>${r.origem}</td>
+            <td class="money">${formatMoney(r.valor)}</td>
+            <td>${statusBadge(r.status)}</td>
+          </tr>
+        `)
+        .join("") + (itensVendidos.length ? `
+          <tr class="row-total row-total-vendido">
+            <td>Total vendidos</td>
+            <td class="money">${formatMoney(totalVendidos)}</td>
+            <td>${statusBadge("vendido")}</td>
+          </tr>
+        ` : "");
+
+      document.querySelector("#tabela-receber tbody").innerHTML = valoresReceber
+        .map((v) => `
+          <tr>
+            <td>${v.origem}</td>
+            <td class="money">${formatMoney(v.valorTotal)}</td>
+            <td class="money">${formatMoney(v.recebido)}</td>
+            <td class="money">${formatMoney(v.faltaReceber)}</td>
+          </tr>
+        `)
+        .join("");
+
+      const lista = document.getElementById("lista-tarefas");
+      lista.innerHTML = proximosPassos
+        .map((t) => {
+          const concluida = tarefaEstaConcluida(t, tarefasSalvas);
+          return `
+            <li class="task-item${concluida ? " done" : ""}" data-id="${t.id}">
+              <input type="checkbox" id="task-${t.id}" ${concluida ? "checked" : ""}>
+              <label class="task-text" for="task-${t.id}">
+                ${t.tarefa}
+                ${t.resultado === "negado" ? '<span class="task-badge task-badge-negado">Negado</span>' : ""}
+              </label>
+            </li>
+          `;
+        })
+        .join("");
+
+      lista.querySelectorAll(".task-item").forEach((item) => {
+        item.addEventListener("click", (e) => {
+          if (e.target.tagName === "INPUT") return;
+          const checkbox = item.querySelector("input");
+          checkbox.checked = !checkbox.checked;
+          checkbox.dispatchEvent(new Event("change"));
+        });
+
+        const checkbox = item.querySelector("input");
+        checkbox.addEventListener("change", () => {
+          item.classList.toggle("done", checkbox.checked);
+          salvarTarefa(item.dataset.id, checkbox.checked);
+        });
+      });
+
+      renderizarHistoricoCartaoBB(historicoCartaoBB);
+      renderizarHistoricoParcelaMoto(historicoParcelaMoto);
+    }
+
+    initTabs();
+    renderizar(DATA);
+  </script>
+</body>
+</html>
