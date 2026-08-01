@@ -25,27 +25,15 @@
 
     <div id="tab-progresso" class="tab-panel active" role="tabpanel">
       <section class="hero-progress" aria-label="Progresso da meta de entrada">
-        <div class="progress-total progress-total-dual">
-          <div class="progress-total-item">
-            <span class="progress-total-label">Na conta</span>
-            <span class="progress-total-value" id="progress-total-conta">—</span>
-          </div>
-          <div class="progress-total-item progress-total-potential">
-            <span class="progress-total-label">Conta + itens à venda</span>
-            <span class="progress-total-value progress-total-value-potential" id="progress-total-com-vendas">—</span>
-          </div>
+        <div class="progress-total">
+          <span class="progress-total-label">Na conta</span>
+          <span class="progress-total-value" id="progress-total-conta">—</span>
         </div>
         <div class="hero-progress-top">
           <h2>Progresso da entrada</h2>
-          <div class="progress-summary progress-summary-dual">
-            <div class="progress-percent-item">
-              <span class="percent" id="progress-percent-conta">—</span>
-              <span class="progress-subtitle">só o valor na conta</span>
-            </div>
-            <div class="progress-percent-item progress-percent-potential">
-              <span class="percent percent-potential" id="progress-percent-total">—</span>
-              <span class="progress-subtitle">conta + itens à venda</span>
-            </div>
+          <div class="progress-summary">
+            <span class="percent" id="progress-percent-conta">—</span>
+            <span class="progress-subtitle">da meta limite</span>
           </div>
         </div>
         <div class="metas-bar" id="metas-bar"></div>
@@ -282,6 +270,100 @@
       return `<span class="badge ${c.cls}">${c.label}</span>`;
     }
 
+    function renderizarCenarioDistribuicao(c) {
+      const [bb, nubank] = c.cartoes;
+
+      return `
+        <section class="card cenario-card">
+          <div class="card-header">
+            <span class="cenario-badge">${c.titulo}</span>
+            <span class="card-icon">💳</span>
+            <h3>${c.nome}</h3>
+          </div>
+          <div class="card-body financiamento-body">
+            <div class="financiamento-info">
+              <div class="fin-info-item"><span class="fin-label">Entrada</span><span class="fin-value">${formatMoney(c.entrada)}</span></div>
+              <div class="fin-info-item"><span class="fin-label">Valor no cartão</span><span class="fin-value">${formatMoney(c.valorNoCartao)}</span></div>
+              <div class="fin-info-item"><span class="fin-label">Prazo</span><span class="fin-value">${c.prazo}x</span></div>
+              <div class="fin-info-item"><span class="fin-label">Parcela total</span><span class="fin-value">${formatMoney(c.parcelaTotal)}/mês</span></div>
+            </div>
+            <div class="financiamento-block">
+              <h4>Distribuição — entrada de ${formatMoney(c.entrada)}</h4>
+              <div class="table-scroll">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Entrada</th>
+                      <th>Valor no cartão</th>
+                      <th>Banco do Brasil</th>
+                      <th>Parcela BB</th>
+                      <th>Nubank</th>
+                      <th>Parcela Nubank</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="row-selected">
+                      <td class="money">${formatMoney(c.entrada)}</td>
+                      <td class="money">${formatMoney(c.valorNoCartao)}</td>
+                      <td class="money">${formatMoney(bb.valor)}</td>
+                      <td class="money">≈ ${formatMoney(bb.parcela)}</td>
+                      <td class="money">${formatMoney(nubank.valor)}</td>
+                      <td class="money">≈ ${formatMoney(nubank.parcela)}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="financiamento-grid cartao-grid">
+              <div class="financiamento-block">
+                <h4>Conferência</h4>
+                <table class="data-table">
+                  <thead><tr><th>Cartão</th><th>Valor</th><th>% do financiado</th></tr></thead>
+                  <tbody>
+                    ${c.cartoes.map((cartao) => `
+                      <tr>
+                        <td>${cartao.banco}</td>
+                        <td class="money">${formatMoney(cartao.valor)}</td>
+                        <td>≈ ${cartao.percentual.toFixed(1).replace(".", ",")}%</td>
+                      </tr>
+                    `).join("")}
+                  </tbody>
+                </table>
+              </div>
+              <div class="financiamento-block">
+                <h4>Parcela total</h4>
+                <table class="data-table">
+                  <thead><tr><th>Item</th><th>Valor</th></tr></thead>
+                  <tbody>
+                    <tr>
+                      <td>Parcela BB</td>
+                      <td class="money">≈ ${formatMoney(bb.parcela)}</td>
+                    </tr>
+                    <tr>
+                      <td>Parcela Nubank</td>
+                      <td class="money">≈ ${formatMoney(nubank.parcela)}</td>
+                    </tr>
+                    <tr class="row-selected">
+                      <td>Total mensal</td>
+                      <td class="money">${formatMoney(c.parcelaTotal)}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="financiamento-destaque">
+              <div class="destaque-titulo">Observação</div>
+              <p class="destaque-texto">${c.observacao}</p>
+              <div class="destaque-valores">
+                <div><span class="destaque-label">${c.prazo}x no total</span><span class="destaque-valor">${formatMoney(c.parcelaTotal)}/mês</span></div>
+                <div><span class="destaque-label">BB + Nubank</span><span class="destaque-valor">${formatMoney(bb.valor)} + ${formatMoney(nubank.valor)}</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
     function renderizarCenarioSafra(c) {
       const { prazo: prazoEscolhido, parcela, valorFinanciar, valorTotalPago, observacao } = c.condicoesEscolhidas;
 
@@ -487,6 +569,7 @@
     function renderizarCenarios(cenarios) {
       document.getElementById("cenarios-container").innerHTML = cenarios
         .map((c) => {
+          if (c.tipo === "distribuicao") return renderizarCenarioDistribuicao(c);
           if (c.tipo === "safra") return renderizarCenarioSafra(c);
           if (c.tipo === "cartao") return renderizarCenarioCartao(c);
           return "";
@@ -582,29 +665,21 @@
       `;
     }
 
-    function renderizarMetas(meta, recursos) {
+    function renderizarMetas(meta) {
       const metas = meta.metasEntrada;
       const conta = meta.valorDisponivelHoje;
-      const totalVendas = recursos
-        .filter((r) => r.status === "anunciado")
-        .reduce((sum, r) => sum + r.valor, 0);
-      const total = conta + totalVendas;
       const metaMax = metas[metas.length - 1].valor;
-      const proximaMeta = metas.find((m) => total < m.valor);
+      const proximaMeta = metas.find((m) => conta < m.valor);
       const percentConta = (conta / metaMax) * 100;
-      const percentTotal = (total / metaMax) * 100;
-      const contaPercent = Math.min(100, (conta / metaMax) * 100);
-      const vendasPercent = Math.min(100 - contaPercent, (totalVendas / metaMax) * 100);
+      const contaPercent = Math.min(100, percentConta);
 
       document.getElementById("progress-total-conta").textContent = formatMoney(conta);
-      document.getElementById("progress-total-com-vendas").textContent = formatMoney(total);
       document.getElementById("progress-percent-conta").textContent = `${percentConta.toFixed(1)}%`;
-      document.getElementById("progress-percent-total").textContent = `${percentTotal.toFixed(1)}%`;
 
       const markersHtml = metas
         .map((m, i) => {
           const left = (m.valor / metaMax) * 100;
-          const alcancada = total >= m.valor;
+          const alcancada = conta >= m.valor;
           const edgeClass = i === 0 ? "metas-marker-start" : i === metas.length - 1 ? "metas-marker-end" : "";
           return `
             <div class="metas-marker ${edgeClass} ${alcancada ? "metas-marker-done" : ""}" style="left: ${left}%">
@@ -617,10 +692,9 @@
         .join("");
 
       document.getElementById("metas-bar").innerHTML = `
-        <div class="metas-bar-track" role="progressbar" aria-valuemin="0" aria-valuemax="${metaMax}" aria-valuenow="${total}">
+        <div class="metas-bar-track" role="progressbar" aria-valuemin="0" aria-valuemax="${metaMax}" aria-valuenow="${conta}">
           <div class="metas-bar-stack">
             <div class="metas-bar-fill metas-bar-fill-conta" style="width: ${contaPercent}%"></div>
-            <div class="metas-bar-fill metas-bar-fill-vendas" style="width: ${vendasPercent}%"></div>
           </div>
           ${markersHtml}
         </div>
@@ -628,13 +702,12 @@
 
       document.getElementById("metas-legend").innerHTML = `
         <span class="legend-item"><span class="legend-swatch legend-conta"></span>Na conta</span>
-        <span class="legend-item"><span class="legend-swatch legend-vendas"></span>Itens à venda</span>
       `;
 
       document.getElementById("metas-tiers").innerHTML = metas
         .map((m) => {
-          const alcancada = total >= m.valor;
-          const falta = Math.max(0, m.valor - total);
+          const alcancada = conta >= m.valor;
+          const falta = Math.max(0, m.valor - conta);
           const isProxima = proximaMeta && proximaMeta.id === m.id;
           return `
             <div class="meta-tier ${alcancada ? "meta-tier-done" : ""} ${isProxima ? "meta-tier-active" : ""}">
@@ -657,16 +730,12 @@
           <div class="value highlight">${formatMoney(conta)}</div>
         </div>
         <div class="hero-stat">
-          <div class="label">Itens à venda</div>
-          <div class="value simulado">${formatMoney(totalVendas)}</div>
-        </div>
-        <div class="hero-stat">
           <div class="label">Próxima meta${proximaMeta ? ` (${proximaMeta.label.toLowerCase()})` : ""}</div>
           <div class="value ${proximaMeta ? "warning" : "success"}">${proximaMeta ? formatMoney(proximaMeta.valor) : "Todas alcançadas"}</div>
         </div>
         <div class="hero-stat">
           <div class="label">Falta para a próxima</div>
-          <div class="value warning">${proximaMeta ? formatMoney(proximaMeta.valor - total) : formatMoney(0)}</div>
+          <div class="value warning">${proximaMeta ? formatMoney(proximaMeta.valor - conta) : formatMoney(0)}</div>
         </div>
       `;
     }
@@ -752,7 +821,7 @@
       document.getElementById("footer-projeto").textContent = projeto.nome;
       document.getElementById("footer-modelo").textContent = projeto.modelo.split(" ").pop();
 
-      renderizarMetas(meta, recursos);
+      renderizarMetas(meta);
 
       const metaMinima = meta.metasEntrada.find((m) => m.id === "minima");
       const metaIdealRef = meta.metasEntrada.find((m) => m.id === "ideal");

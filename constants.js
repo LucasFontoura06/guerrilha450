@@ -20,9 +20,26 @@ const DOCUMENTACAO = {
   custoTotal: 686.26
 };
 
+const CENARIO_DISTRIBUICAO = {
+  id: "00",
+  titulo: "Cenário 01",
+  nome: "Distribuição dos cartões",
+  tipo: "distribuicao",
+  pendente: false,
+  prazo: 21,
+  entrada: 16000,
+  valorNoCartao: 13490,
+  parcelaTotal: 809,
+  cartoes: [
+    { banco: "Banco do Brasil", valor: 11590, parcela: 695, percentual: 85.9 },
+    { banco: "Nubank", valor: 1900, parcela: 114, percentual: 14.1 }
+  ],
+  observacao: "Os valores das parcelas por cartão são aproximados, pois a divisão é proporcional ao valor lançado em cada cartão. Na prática, a maquininha pode gerar diferença de alguns centavos."
+};
+
 const CENARIO_01 = {
   id: "01",
-  titulo: "Cenário 02",
+  titulo: "Cenário 03",
   nome: "Pré-financiamento Safra",
   tipo: "safra",
   pendente: false,
@@ -56,7 +73,7 @@ const CENARIO_01 = {
 
 const CENARIO_02 = {
   id: "02",
-  titulo: "Cenário 01",
+  titulo: "Cenário 02",
   nome: "Cartão de crédito",
   tipo: "cartao",
   pendente: false,
@@ -89,10 +106,10 @@ const CENARIO_02 = {
   }
 };
 
-const CENARIOS = [CENARIO_02, CENARIO_01];
+const CENARIOS = [CENARIO_DISTRIBUICAO, CENARIO_02, CENARIO_01];
 
 const RECURSOS = [
-  { id: "saldo", origem: "Saldo em conta", valor: 14953.61, status: "disponivel" },
+  { id: "saldo", origem: "Saldo em conta", valor: 15114.99, status: "disponivel" },
   { id: "lenovo", origem: "Venda do Lenovo V14", valor: 1900, status: "vendido" },
   { id: "teclado", origem: "Venda do Logitech MX Keys Mini", valor: 450, status: "vendido" },
   { id: "ssd", origem: "Venda do SSD Kingston Sata 480GB", valor: 350, status: "vendido" },
@@ -105,7 +122,7 @@ const RECURSOS = [
 
 const VALORES_RECEBER = [
   { id: "renata", origem: "Renata", valorTotal: 3730, recebido: 500, faltaReceber: 3230 },
-  { id: "fernando-remedio", origem: "Fernando — Remédio do Victor (3x R$ 147,30)", valorTotal: 441.90, recebido: 294.60, faltaReceber: 147.30 },
+  { id: "fernando-remedio", origem: "Fernando — Remédio do Victor (3x R$ 147,30)", valorTotal: 441.90, recebido: 441.90, faltaReceber: 0 },
   { id: "fernando-gasolina", origem: "Fernando — Gasolina", valorTotal: 100, recebido: 100, faltaReceber: 0 }
 ];
 
@@ -122,7 +139,7 @@ const PROXIMOS_PASSOS = [
 ];
 
 const META = {
-  valorDisponivelHoje: 14953.61,
+  valorDisponivelHoje: 15114.99,
   metasEntrada: [
     { id: "minima", icone: "🎯", label: "Meta mínima", valor: 12000 },
     { id: "ideal", icone: "🚀", label: "Meta ideal", valor: 15000 },
