@@ -90,8 +90,8 @@ const CENARIO_02 = {
     { entrada: 12000, valorFinanciado: 17490, parcela: 1171, totalParcelas: 24591, exato: false },
     { entrada: 13000, valorFinanciado: 16490, parcela: 1081, totalParcelas: 22701, exato: false },
     { entrada: 14000, valorFinanciado: 15490, parcela: 990, totalParcelas: 20790, exato: false },
-    { entrada: 15000, valorFinanciado: 14490, parcela: 899.56, totalParcelas: 18890.73, exato: true, guardado: true },
-    { entrada: 16000, valorFinanciado: 13490, parcela: 809, totalParcelas: 16989, exato: true },
+    { entrada: 15000, valorFinanciado: 14490, parcela: 899.56, totalParcelas: 18890.73, exato: true },
+    { entrada: 16000, valorFinanciado: 13490, parcela: 809, totalParcelas: 16989, exato: true, guardado: true },
     { entrada: 17000, valorFinanciado: 12490, parcela: 718, totalParcelas: 15078, exato: false, atual: true },
     { entrada: 18000, valorFinanciado: 11490, parcela: 628, totalParcelas: 13188, exato: false },
     { entrada: 19000, valorFinanciado: 10490, parcela: 537, totalParcelas: 11277, exato: false, melhor: true },
@@ -109,7 +109,7 @@ const CENARIO_02 = {
 const CENARIOS = [CENARIO_DISTRIBUICAO, CENARIO_02, CENARIO_01];
 
 const RECURSOS = [
-  { id: "saldo", origem: "Saldo em conta", valor: 15114.99, status: "disponivel" },
+  { id: "saldo", origem: "Saldo em conta", valor: 16000, status: "disponivel" },
   { id: "lenovo", origem: "Venda do Lenovo V14", valor: 1900, status: "vendido" },
   { id: "teclado", origem: "Venda do Logitech MX Keys Mini", valor: 450, status: "vendido" },
   { id: "ssd", origem: "Venda do SSD Kingston Sata 480GB", valor: 350, status: "vendido" },
@@ -139,7 +139,7 @@ const PROXIMOS_PASSOS = [
 ];
 
 const META = {
-  valorDisponivelHoje: 15114.99,
+  valorDisponivelHoje: 16000,
   metasEntrada: [
     { id: "minima", icone: "🎯", label: "Meta mínima", valor: 12000 },
     { id: "ideal", icone: "🚀", label: "Meta ideal", valor: 15000 },
